@@ -1,21 +1,38 @@
 package com.example.task03;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
 public class Task03Main {
     public static void main(String[] args) throws IOException {
-        //здесь вы можете вручную протестировать ваше решение, вызывая реализуемый метод и смотря результат
-        // например вот так:
+        // чтобы протестировать свое решение, вам нужно:
+        // - направить файл input.test в стандартный ввод программы (в настройках запуска программы в IDE или в консоли)
+        // - направить стандартный вывод программы в файл output.test
+        // - запустить программу
+        // - и сравнить получившийся файл output.test с expected.test
 
-        /*
-        System.out.println(readAsString(new FileInputStream("task03/src/com/example/task03/input.test"), Charset.forName("KOI8-R")));
-        */
+        // Пример тестирования с файлом input.test:
+        try (InputStream inputStream = new FileInputStream("task03/src/com/example/task03/input.test")) {
+            String result = readAsString(inputStream, Charset.forName("UTF-8"));
+            System.out.println(result);
+        }
     }
 
     public static String readAsString(InputStream inputStream, Charset charset) throws IOException {
-        // your implementation here
-        return "";
+        if (inputStream == null || charset == null) {
+            throw new IllegalArgumentException();
+        }
+
+        byte[] buffer = new byte[1024];
+        StringBuilder result = new StringBuilder();
+        int bytesRead;
+
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            result.append(new String(buffer, 0, bytesRead, charset));
+        }
+
+        return result.toString();
     }
 }
